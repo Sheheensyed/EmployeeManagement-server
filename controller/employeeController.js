@@ -16,7 +16,7 @@ exports.register = async (req, res) => {
     try {
         const existingEmployee = await employees.findOne({ employeeID })
         if (existingEmployee) {
-            res.status(406).json(`Employee already exist`)
+            res.status(406).json({ message: `Employee already exist` })
         } else {
             const hashedPassword = await bcrypt.hash(password, 10)
             const newEmployee = new employees({
@@ -46,11 +46,18 @@ exports.login = async (req, res) => {
     console.log(employeeID, password);
 
     try {
-        const existingEmployee = await employees.findOne({ employeeID, password })
+        const existingEmployee = await employees.findOne({ employeeID })
 
         if (existingEmployee) {
-            const token = jwt.sign({ empID: existingEmployee._id }, "okBye")
-            res.status(200).json({ existingEmployee, token })
+            let isUserPasswordMatch = await bcrypt.compare(password, existingEmployee.password)
+
+            if (isUserPasswordMatch || password == existingEmployee.password) {
+
+                const token = jwt.sign({ empID: existingEmployee._id }, "okBye")
+                res.status(200).json({ existingEmployee, token })
+            } else {
+                res.status(406).json('Incorrect ID or password')
+            }
 
         } else {
             res.status(406).json('Incorrect ID or password')

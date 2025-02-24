@@ -30,6 +30,11 @@ const employeeSchema = new mongoose.Schema({
     gender:{
         required:true,
         type:String
+    },
+    role:{
+        type:String,
+        enum:['admin','user'],
+        default:'user'
     }
 })
 
