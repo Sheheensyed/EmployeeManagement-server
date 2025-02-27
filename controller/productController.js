@@ -33,6 +33,8 @@ exports.addProductController = async (req, res) => {
 
 // get all products
 exports.getAllProductsController = async (req, res) => {
+    console.log(`Inside getAllProductsController`);
+    
     // path parameter = req.params
     // query parameter = req.query
     const searchkey = req.query.search
@@ -47,7 +49,7 @@ exports.getAllProductsController = async (req, res) => {
         const allProducts = await products.find()
         res.status(200).json(allProducts)
     } catch (error) {
-        res.status(401).json(error)
+        res.status(401).json({message:error.message})
     }
 }
 
