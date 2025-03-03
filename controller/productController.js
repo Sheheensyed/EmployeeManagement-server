@@ -56,7 +56,7 @@ exports.getAllProductsController = async (req, res) => {
 // get all home products
 exports.getHomeProductsController = async (req, res) => {
     try {
-        const allProducts = await products.find().limit(7)
+        const allProducts = await products.find().limit(6)
         res.status(200).json(allProducts)
     } catch (error) {
         res.status(401).json(error)
